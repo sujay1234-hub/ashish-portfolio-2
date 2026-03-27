@@ -421,27 +421,38 @@ footer .flogo{font-family:'Orbitron',sans-serif;font-weight:900;color:var(--neon
 /* SKILL CARD FERMENTATION FIX */
 .skill-card-ferment-label{
   font-family:'Share Tech Mono',monospace;font-size:.62rem;
-  color:rgba(0,255,102,0.55);line-height:1.6;margin-bottom:8px;
+  color:rgba(0,255,102,0.55);line-height:1.7;margin-bottom:10px;
   letter-spacing:.03em;
 }
 .skill-card-ferment-label strong{
   font-family:'Orbitron',sans-serif;font-size:.65rem;font-weight:700;
-  color:var(--neon);letter-spacing:.05em;display:block;margin-bottom:6px;
+  color:var(--neon);letter-spacing:.05em;display:block;margin-bottom:5px;
 }
-.skill-card-tags-wrap{display:flex;flex-wrap:wrap;gap:5px;margin-top:2px;}
+.skill-card-tags-wrap{display:flex;flex-wrap:wrap;gap:5px;margin-top:4px;}
 
 /* ACHIEVE GALLERY CARD */
-.achieve-card-gallery{cursor:pointer;}
-.achieve-card-gallery:hover{border-color:rgba(0,255,102,0.4);background:rgba(0,255,102,0.04);}
-.achieve-card-gallery .cert-view-badge{
+.achieve-card-gallery{cursor:default;}
+.achieve-card-gallery:hover{border-color:rgba(0,255,102,0.3);}
+.achieve-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;}
+.achieve-btn{
   display:inline-flex;align-items:center;gap:6px;
-  font-family:'Share Tech Mono',monospace;font-size:.58rem;letter-spacing:.1em;
-  text-transform:uppercase;color:var(--neon);border:1px solid rgba(0,255,102,0.3);
-  padding:3px 10px;border-radius:20px;background:rgba(0,255,102,0.05);transition:.25s;
+  font-family:'Share Tech Mono',monospace;font-size:.58rem;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--neon);
+  border:1px solid rgba(0,255,102,0.3);border-radius:3px;
+  padding:6px 12px;background:rgba(0,255,102,0.04);
+  cursor:pointer;transition:.25s;outline:none;
+  position:relative;overflow:hidden;
 }
-.achieve-card-gallery:hover .cert-view-badge{
-  background:rgba(0,255,102,0.12);border-color:var(--neon);box-shadow:0 0 12px rgba(0,255,102,0.25);
+.achieve-btn::before{
+  content:'';position:absolute;bottom:0;left:0;width:100%;height:1px;
+  background:var(--neon);transform:scaleX(0);transform-origin:left;transition:.25s;
 }
+.achieve-btn:hover{
+  background:rgba(0,255,102,0.1);border-color:var(--neon);
+  box-shadow:0 0 14px rgba(0,255,102,0.2);color:var(--text);transform:translateY(-2px);
+}
+.achieve-btn:hover::before{transform:scaleX(1);}
+.achieve-btn-icon{font-size:.85rem;line-height:1;}
 
 /* RESPONSIVE GLOBAL FIXES */
 @media(max-width:768px){
@@ -449,6 +460,8 @@ footer .flogo{font-family:'Orbitron',sans-serif;font-weight:900;color:var(--neon
   .hero-role-pill{font-size:.65rem;padding:6px 12px;}
   .cert-grid{grid-template-columns:1fr;}
   .achieve-grid{padding:0;}
+  .achieve-actions{gap:6px;}
+  .achieve-btn{font-size:.55rem;padding:5px 10px;}
 }
 @media(max-width:480px){
   .hero-role-pill{font-size:.6rem;padding:5px 10px;gap:5px;}
@@ -594,9 +607,9 @@ footer .flogo{font-family:'Orbitron',sans-serif;font-weight:900;color:var(--neon
       </div>
       <div class="skill-card">
         <div class="skill-card-icon">⚗️</div>
-        <div class="skill-card-name">Bioprocess Engg.</div>
+        <div class="skill-card-name">Bioprocess Engineering</div>
         <div class="skill-card-sub">
-          <div class="skill-card-ferment-label"><strong>Fermentation Technology</strong>Upstream · Midstream · Downstream processing</div>
+          <div class="skill-card-ferment-label"><strong>Fermentation Technology</strong>Bioreactor design &amp; industrial fermentation processes</div>
           <div class="skill-card-tags-wrap">
             <span class="skill-tag">Upstream</span>
             <span class="skill-tag">Midstream</span>
@@ -710,12 +723,16 @@ footer .flogo{font-family:'Orbitron',sans-serif;font-weight:900;color:var(--neon
     <div class="section-tag reveal">Recognition · Achievements</div>
     <h2 class="section-title reveal reveal-d1">Awards &amp; <span class="accent">Honours</span></h2>
     <div class="achieve-grid">
-      <div class="achieve-card achieve-card-gallery reveal reveal-d1" onclick="openCertModal('merit')" title="View award evidence">
+      <div class="achieve-card achieve-card-gallery reveal reveal-d1">
         <div class="achieve-icon">🏆</div>
         <div style="flex:1;">
           <div class="achieve-title">Meritorious Student Award — CSIR Jammu</div>
           <div class="achieve-desc">Recognized for outstanding performance in training and securing top position in the quiz competition during the fermentation technology training programme at CSIR Jammu.</div>
-          <div class="cert-view-badge" style="margin-top:10px;"><span class="cert-view-badge-dot"></span>View Award Details</div>
+          <div class="achieve-actions">
+            <button class="achieve-btn" onclick="openCertModal('merit',0)"><span class="achieve-btn-icon">🏅</span>View Certificate</button>
+            <button class="achieve-btn" onclick="openCertModal('merit',1)"><span class="achieve-btn-icon">📷</span>Award Photo</button>
+            <button class="achieve-btn" onclick="openCertModal('merit',2)"><span class="achieve-btn-icon">📰</span>News Coverage</button>
+          </div>
         </div>
       </div>
       <div class="achieve-card reveal reveal-d2">
@@ -925,7 +942,7 @@ const CERT_GALLERIES = {
   }
 };
 let certIdx=0, certTotal=0;
-function openCertModal(key){
+function openCertModal(key, startIdx){
   const g=CERT_GALLERIES[key]||CERT_GALLERIES.csir;
   document.getElementById('modalIcon').textContent=g.icon;
   document.getElementById('modalTitle').textContent=g.title;
@@ -934,8 +951,8 @@ function openCertModal(key){
   const slider=document.getElementById('certSlider');
   const dots=document.getElementById('certDots');
   slider.innerHTML=g.slides.map(s=>`<div class="modal-slide"><span class="slide-loading">// LOADING...</span><img src="${s.src}" alt="${s.label}" onload="this.previousElementSibling.style.display='none'"></div>`).join('');
-  dots.innerHTML=g.slides.map((_,i)=>`<div class="modal-dot${i===0?' active':''}" onclick="goToSlide(${i})"></div>`).join('');
-  certIdx=0;
+  certIdx=(startIdx!==undefined&&startIdx>=0&&startIdx<certTotal)?startIdx:0;
+  dots.innerHTML=g.slides.map((_,i)=>`<div class="modal-dot${i===certIdx?' active':''}" onclick="goToSlide(${i})"></div>`).join('');
   updateCertSlider();
   document.getElementById('certModal').classList.add('open');
   document.body.style.overflow='hidden';
