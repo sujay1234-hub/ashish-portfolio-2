@@ -388,6 +388,34 @@ footer .flogo{font-family:'Orbitron',sans-serif;font-weight:900;color:var(--neon
 .lang-bar-bg{height:4px;background:rgba(0,255,102,0.1);border-radius:2px;overflow:hidden;}
 .lang-bar{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--neon),var(--neon2));box-shadow:0 0 10px rgba(0,255,102,0.5);animation:barFill 1.5s ease both;}
 
+/* HAMBURGER NAV */
+.nav-hamburger{
+  display:none;flex-direction:column;justify-content:center;gap:5px;
+  width:40px;height:40px;background:none;border:1px solid var(--border);
+  border-radius:3px;cursor:pointer;padding:8px;flex-shrink:0;
+  transition:.25s;
+}
+.nav-hamburger:hover{border-color:var(--neon);background:rgba(0,255,102,0.06);}
+.nav-hamburger span{display:block;height:1px;background:var(--neon);transition:.3s;box-shadow:0 0 6px var(--neon);}
+.nav-hamburger.open span:nth-child(1){transform:translateY(6px) rotate(45deg);}
+.nav-hamburger.open span:nth-child(2){opacity:0;}
+.nav-hamburger.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg);}
+
+/* MOBILE NAV OVERLAY */
+.nav-mobile-overlay{
+  display:none;position:fixed;top:0;left:0;width:100%;height:100%;
+  background:rgba(0,0,15,0.97);z-index:999;
+  flex-direction:column;align-items:center;justify-content:center;gap:28px;
+  opacity:0;pointer-events:none;transition:opacity .3s ease;
+}
+.nav-mobile-overlay.open{opacity:1;pointer-events:all;}
+.nav-mobile-overlay a{
+  font-family:'Share Tech Mono',monospace;font-size:1.1rem;letter-spacing:.18em;
+  text-transform:uppercase;color:rgba(0,255,102,0.75);text-decoration:none;
+  transition:.2s;border-bottom:1px solid transparent;padding-bottom:4px;
+}
+.nav-mobile-overlay a:hover{color:var(--neon);border-color:var(--neon);}
+
 /* RESPONSIVE */
 @media(max-width:900px){
   .about-grid,.contact-grid{grid-template-columns:1fr;gap:40px;}
@@ -395,15 +423,27 @@ footer .flogo{font-family:'Orbitron',sans-serif;font-weight:900;color:var(--neon
   nav,nav.scrolled{padding:16px 24px;}
   .hero-content{padding:0 24px;}
   .nav-links{display:none;}
+  .nav-hamburger{display:flex;}
+  .nav-mobile-overlay{display:flex;}
   footer{flex-direction:column;gap:12px;padding:30px 24px;}
   .skills-grid{grid-template-columns:repeat(2,1fr);}
   .projects-grid{grid-template-columns:1fr;}
+  .orbit1{width:220px;height:220px;}
+  .orbit2{width:270px;height:270px;}
+  .contact-panel{padding:28px 20px;}
 }
 @media(max-width:600px){
   .skills-grid{grid-template-columns:1fr;}
   .cert-grid{grid-template-columns:1fr;}
   .interests-grid{grid-template-columns:repeat(2,1fr);}
   .footer-links{flex-direction:column;gap:14px;align-items:center;}
+  .orbit1{width:180px;height:180px;}
+  .orbit2{width:222px;height:222px;}
+  .photo-circle-outer{width:180px;height:180px;}
+  .photo-orbit-wrap{width:180px;height:180px;}
+  .achieve-card{flex-direction:column;gap:12px;}
+  .hero-btns{flex-direction:column;gap:12px;}
+  .btn-primary,.btn-ghost{justify-content:center;}
 }
 
 /* HERO ROLES PILLS */
@@ -449,6 +489,7 @@ footer .flogo{font-family:'Orbitron',sans-serif;font-weight:900;color:var(--neon
   .hero-role-pill{font-size:.65rem;padding:6px 12px;}
   .cert-grid{grid-template-columns:1fr;}
   .achieve-grid{padding:0;}
+  .edu-item{padding-left:70px;}
 }
 @media(max-width:480px){
   .hero-role-pill{font-size:.6rem;padding:5px 10px;gap:5px;}
@@ -457,6 +498,18 @@ footer .flogo{font-family:'Orbitron',sans-serif;font-weight:900;color:var(--neon
   .modal-cert-name{font-size:.75rem;}
   .modal-cert-org{font-size:.58rem;}
   .modal-slide-label{display:none;}
+  section{padding:60px 16px;}
+  .hero-name{font-size:clamp(2rem,12vw,4rem);}
+  .edu-timeline::before{left:22px;}
+  .edu-item{padding-left:56px;}
+  .edu-node{left:0;width:42px;height:42px;}
+  .interests-grid{grid-template-columns:1fr;}
+  .c-link{padding:12px 14px;}
+}
+/* Disable pointer cursor on touch devices */
+@media(hover:none) and (pointer:coarse){
+  body{cursor:auto;}
+  #cur,#cur-trail{display:none;}
 }
 
 </style>
@@ -483,7 +536,22 @@ footer .flogo{font-family:'Orbitron',sans-serif;font-weight:900;color:var(--neon
     <li><a href="#interests">Interests</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
+  <button class="nav-hamburger" id="navHamburger" aria-label="Toggle navigation" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<!-- MOBILE NAV OVERLAY -->
+<div class="nav-mobile-overlay" id="navMobileOverlay">
+  <a href="#about" onclick="closeMobileNav()">About</a>
+  <a href="#education" onclick="closeMobileNav()">Education</a>
+  <a href="#skills" onclick="closeMobileNav()">Skills</a>
+  <a href="#projects" onclick="closeMobileNav()">Projects</a>
+  <a href="#certifications" onclick="closeMobileNav()">Certifications</a>
+  <a href="#achievements" onclick="closeMobileNav()">Achievements</a>
+  <a href="#interests" onclick="closeMobileNav()">Interests</a>
+  <a href="#contact" onclick="closeMobileNav()">Contact</a>
+</div>
 
 <!-- HERO / INTRO -->
 <section id="hero">
@@ -902,6 +970,12 @@ setInterval(()=>{if(Math.random()>.85)triggerGlitch();},3000);
 // ── FORM ──────────────────────────────────────────────────────
 function sendMsg(){const n=document.getElementById('f-name').value,e=document.getElementById('f-email').value,m=document.getElementById('f-msg').value;
 if(!n||!e||!m)return;document.querySelector('.form-submit').style.display='none';document.getElementById('f-success').style.display='block';}
+
+// ── HAMBURGER NAV ─────────────────────────────────────────────
+const navHamburger=document.getElementById('navHamburger');
+const navMobileOverlay=document.getElementById('navMobileOverlay');
+function closeMobileNav(){navHamburger.classList.remove('open');navMobileOverlay.classList.remove('open');navHamburger.setAttribute('aria-expanded','false');document.body.style.overflow='';}
+navHamburger.addEventListener('click',()=>{const isOpen=navHamburger.classList.toggle('open');navMobileOverlay.classList.toggle('open',isOpen);navHamburger.setAttribute('aria-expanded',String(isOpen));document.body.style.overflow=isOpen?'hidden':'';});
 
 // ── SCROLL SPEED PARTICLES ──────�
 // ── CERT MODAL (dual gallery) ─────────────────────────────────
