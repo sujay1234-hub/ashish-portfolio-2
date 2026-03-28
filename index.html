@@ -594,7 +594,7 @@ footer .flogo{font-family:'Orbitron',sans-serif;font-weight:900;color:var(--neon
     </div>
     <p class="hero-desc">A Biotechnology student exploring the convergence of AI, biology, and healthcare technology, focused on creating innovative and impactful solutions.</p>
     <div class="hero-btns">
-      <a href="#education" class="btn-primary">Academic Journey <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      <a href="Ashish_Narayan_Resume.pdf" download class="btn-primary">Download CV <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg></a>
       <a href="#contact" class="btn-ghost">Get In Touch ↗</a>
     </div>
   </div>
@@ -844,11 +844,12 @@ footer .flogo{font-family:'Orbitron',sans-serif;font-weight:900;color:var(--neon
           <div class="cert-view-badge" style="margin-top:10px;"><span class="cert-view-badge-dot"></span>View Award Details</div>
         </div>
       </div>
-      <div class="achieve-card reveal reveal-d2">
+      <div class="achieve-card achieve-card-gallery reveal reveal-d2" onclick="openCertModal('badminton')" title="View award evidence">
         <div class="achieve-icon">🥉</div>
-        <div>
+        <div style="flex:1;">
           <div class="achieve-title">Bronze Medal — Intra-University Badminton</div>
           <div class="achieve-desc">Awarded the Bronze Medal in the Men's Doubles category of the Intra-University Badminton Competition, demonstrating teamwork, agility, and competitive spirit.</div>
+          <div class="cert-view-badge" style="margin-top:10px;"><span class="cert-view-badge-dot"></span>View Award Details</div>
         </div>
       </div>
     </div>
@@ -1075,6 +1076,15 @@ CERT_GALLERIES.csirInternship = {
     {src:'group-photo.jpg',              label:'Group Photo'},
     {src:'participation-certificate.jpg',label:'Participation Certificate'},
     {src:'newspaper-cutout.jpg',         label:'Newspaper Cutout'}
+  ]
+};
+// ── BADMINTON AWARD GALLERY ───────────────────────────────────
+CERT_GALLERIES.badminton = {
+  icon:'🥉',
+  title:'Bronze Medal — Intra-University Badminton',
+  org:'Lovely Professional University · 2025',
+  slides:[
+    {src:'badmintongroup.jpeg', label:'Badminton Bronze Medal'}
   ]
 };
 function openCertModal(key){
