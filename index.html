@@ -134,6 +134,13 @@ section{padding:120px 80px;position:relative;}
 .edu-school{font-family:'Share Tech Mono',monospace;font-size:.8rem;color:var(--neon);letter-spacing:.06em;margin-bottom:4px;}
 .edu-desc{color:rgba(232,255,242,0.5);font-size:.85rem;line-height:1.7;margin-top:8px;}
 
+/* INTERN CARD */
+.intern-card{cursor:pointer;}
+.intern-card:hover{border-color:rgba(0,204,255,0.4)!important;transform:translateX(6px);box-shadow:0 0 28px rgba(0,204,255,0.1);}
+.intern-view-btn{display:inline-flex;align-items:center;gap:6px;font-family:'Share Tech Mono',monospace;font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:var(--neon);border:1px solid rgba(0,255,102,0.3)!important;padding:4px 12px;border-radius:20px;background:rgba(0,255,102,0.05);transition:.25s;}
+.intern-view-btn:hover,.intern-card:hover .intern-view-btn{background:rgba(0,255,102,0.13);border-color:var(--neon)!important;box-shadow:0 0 14px rgba(0,255,102,0.3),0 0 28px rgba(0,255,102,0.1);animation:internBtnPulse .9s ease-in-out infinite;}
+@keyframes internBtnPulse{0%,100%{box-shadow:0 0 10px rgba(0,255,102,0.25);}50%{box-shadow:0 0 22px rgba(0,255,102,0.5),0 0 40px rgba(0,255,102,0.15);}}
+
 /* SKILLS */
 #skills{background:rgba(0,0,20,0.6);}
 .skills-grid{max-width:1200px;margin:60px auto 0;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:18px;}
@@ -575,6 +582,33 @@ footer .flogo{font-family:'Orbitron',sans-serif;font-weight:900;color:var(--neon
   </div>
 </section>
 
+<!-- INTERNSHIP & TRAINING -->
+<section id="internship" style="background:rgba(0,0,20,0.5);padding-top:0;padding-bottom:120px;">
+  <div style="max-width:1200px;margin:0 auto;padding-top:80px;border-top:1px solid rgba(0,255,102,0.07);">
+    <div class="section-tag reveal">Experience · Lab Exposure</div>
+    <h2 class="section-title reveal reveal-d1">Internship &amp; <span class="accent">Training</span></h2>
+    <div class="edu-timeline reveal reveal-d2">
+
+      <div class="edu-item">
+        <div class="edu-node" style="border-color:var(--neon2);box-shadow:0 0 20px rgba(0,204,255,0.45);">
+          <span style="font-size:1.4rem;">🔬</span>
+        </div>
+        <div class="edu-card intern-card" style="border-color:rgba(0,204,255,0.2);" onclick="openCertModal('csirInternship')">
+          <div class="edu-year" style="color:var(--neon2);">2025</div>
+          <div class="edu-degree" style="background:linear-gradient(135deg,var(--neon),var(--neon2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Summer Internship Training <span style="-webkit-text-fill-color:rgba(232,255,242,0.6);font-family:'Share Tech Mono',monospace;font-size:.75rem;font-weight:400;letter-spacing:.08em;">(14 Days)</span></div>
+          <div class="edu-school" style="color:var(--neon2);">🏛 CSIR — Council of Scientific &amp; Industrial Research</div>
+          <p class="edu-desc">Completed a 14-day internship focused on laboratory techniques, research fundamentals, and practical exposure to scientific workflows.</p>
+          <button class="cert-view-badge intern-view-btn" onclick="event.stopPropagation();openCertModal('csirInternship')" style="margin-top:14px;cursor:pointer;border:none;">
+            <span class="cert-view-badge-dot"></span>
+            View Certificate
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
 <!-- SKILLS -->
 <section id="skills">
   <div style="max-width:1200px;margin:0 auto;">
@@ -924,7 +958,19 @@ const CERT_GALLERIES = {
     ]
   }
 };
-let certIdx=0, certTotal=0;
+// ── CSIR INTERNSHIP GALLERY ───────────────────────────────────
+CERT_GALLERIES.csirInternship = {
+  icon:'🏛',
+  title:'Summer Internship Training (14 Days)',
+  org:'CSIR — Council of Scientific & Industrial Research · 2025',
+  slides:[
+    {src:'merit.jpeg',        label:'Merit Certificate'},
+    {src:'internship-certificate.jpg',   label:'Internship Certificate'},
+    {src:'group-photo.jpg',              label:'Group Photo'},
+    {src:'participation-certificate.jpg',label:'Participation Certificate'},
+    {src:'newspaper-cutout.jpg',         label:'Newspaper Cutout'}
+  ]
+};
 function openCertModal(key){
   const g=CERT_GALLERIES[key]||CERT_GALLERIES.csir;
   document.getElementById('modalIcon').textContent=g.icon;
