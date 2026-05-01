@@ -25,6 +25,7 @@ body{background:var(--void);color:var(--text);font-family:'Inter',sans-serif;ove
 #cur-dot{width:6px;height:6px;background:var(--neon);border-radius:50%;position:absolute;transform:translate(-50%,-50%);box-shadow:0 0 10px var(--neon),0 0 30px var(--neon);}
 #cur-ring{width:36px;height:36px;border:1px solid rgba(0,255,102,0.5);border-radius:50%;position:absolute;transform:translate(-50%,-50%);transition:all .12s;}
 #cur-trail{position:fixed;top:0;left:0;pointer-events:none;z-index:99998;}
+@media(hover:none),(pointer:coarse){#cur,#cur-trail{display:none!important;}body{cursor:auto!important;}}
 
 /* CANVAS BG */
 #bg-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0.7;filter:drop-shadow(0 0 8px rgba(0,255,102,0.4));}
@@ -817,12 +818,7 @@ footer .flogo{font-family:'Orbitron',sans-serif;font-weight:900;color:var(--neon
         <div class="cert-issuer">Microsoft / Online Platform</div>
         <div class="cert-year">Spreadsheet &amp; Data Skills</div>
       </div>
-      <div class="cert-card">
-        <div class="cert-icon">🎖️</div>
-        <div class="cert-title">NSS Certificate</div>
-        <div class="cert-issuer">National Service Scheme</div>
-        <div class="cert-year">Community Service · 7-Day Camp</div>
-      </div>
+
     </div>
     <p class="reveal reveal-d4" style="color:rgba(0,255,102,0.35);font-family:'Share Tech Mono',monospace;font-size:.65rem;letter-spacing:.1em;text-align:center;margin-top:28px;">// More certifications coming soon — actively upskilling</p>
   </div>
@@ -979,11 +975,13 @@ footer .flogo{font-family:'Orbitron',sans-serif;font-weight:900;color:var(--neon
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // ── CURSOR ──────────────────────────────────────────────────────
+const isTouchDevice=()=>window.matchMedia('(hover:none),(pointer:coarse)').matches;
+if(!isTouchDevice()){
 const dot=document.getElementById('cur-dot'),ring=document.getElementById('cur-ring');
 const trailCanvas=document.getElementById('cur-trail');
 const tCtx=trailCanvas.getContext('2d');
 trailCanvas.width=window.innerWidth;trailCanvas.height=window.innerHeight;
-let mx=0,my=0,rx=0,ry=0,trail=[];
+let mx=window.innerWidth/2,my=window.innerHeight/2,rx=window.innerWidth/2,ry=window.innerHeight/2,trail=[];
 document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;dot.style.left=mx+'px';dot.style.top=my+'px';trail.push({x:mx,y:my,a:1});if(trail.length>40)trail.shift();});
 function animCursor(){rx+=(mx-rx)*.18;ry+=(my-ry)*.18;ring.style.left=rx+'px';ring.style.top=ry+'px';
 tCtx.clearRect(0,0,trailCanvas.width,trailCanvas.height);
@@ -991,6 +989,7 @@ for(let i=0;i<trail.length;i++){const t=trail[i],p=i/trail.length;tCtx.beginPath
 requestAnimationFrame(animCursor);}
 animCursor();
 window.addEventListener('resize',()=>{trailCanvas.width=window.innerWidth;trailCanvas.height=window.innerHeight;});
+}
 
 // ── BG CANVAS ─────────────────────────────────────────────────
 const bgC=document.getElementById('bg-canvas'),bCtx=bgC.getContext('2d');
